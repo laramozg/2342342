@@ -7,8 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PointDTO {
-    private double x;
-    private double y;
-    private double r;
+public class UserRequest {
+    private String username;
+    private String password;
 }

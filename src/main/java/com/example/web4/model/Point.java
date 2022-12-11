@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "points")
-//@NamedQuery(name = "points.findByUser", query = "from points where user = :user order by id asc")
 public class Point {
     @Id
     @Column(nullable = false, unique = true)
@@ -33,19 +32,12 @@ public class Point {
     @Column(nullable = false)
     private double r;
     @Column(nullable = false)
-    private boolean hit;
+    private boolean result;
     @Column(nullable = false)
     private LocalDateTime time;
     @Column(nullable = false)
     private String user;
-
-//    public LocalDateTime getCurrenttime() {
-//        return currenttime;
-//    }
-//public boolean getResult(){
-//        return result;
+    public boolean getResult() {
+        return result;
+    }
 }
-//    @ManyToOne
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    @JoinColumn(name = "user_id", nullable = false)
-//    private User user;

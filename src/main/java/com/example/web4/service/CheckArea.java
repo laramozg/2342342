@@ -1,28 +1,28 @@
 package com.example.web4.service;
 
 
-import com.example.web4.model.PointDTO;
+import com.example.web4.model.PointRequest;
 import org.springframework.stereotype.Service;
 
 import static java.lang.Math.pow;
 
 @Service
 public class CheckArea {
-    public boolean isHit(PointDTO point) {
+    public boolean isHit(PointRequest point) {
         return isRectangleHit(point) || isCircleHit(point) || isTriangleHit(point);
     }
 
-    private boolean isRectangleHit(PointDTO point) {
+    private boolean isRectangleHit(PointRequest point) {
         return point.getX() >= 0 && point.getX() <= point.getR()
                 && point.getY() <= 0 && point.getY() >= -point.getR();
     }
 
-    private boolean isCircleHit(PointDTO point) {
+    private boolean isCircleHit(PointRequest point) {
         return point.getX() >= 0 && point.getY() >= 0
                 && (pow(point.getX() /2, 2) + pow(point.getY() /2 , 2)) <= pow(point.getR() / 4, 2);
     }
 
-    private boolean isTriangleHit(PointDTO point) {
+    private boolean isTriangleHit(PointRequest point) {
         return point.getX() <= 0 && point.getY() <= 0
                 && point.getX() <= point.getR() && point.getY()>= -point.getR() /2 ;
     }

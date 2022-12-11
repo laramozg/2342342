@@ -1,15 +1,13 @@
 package com.example.web4.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 
 @Setter
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -23,4 +21,5 @@ public class User {
     private String username;
     @Column(nullable = false)
     private String password;
+
 }
