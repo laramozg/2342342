@@ -19,17 +19,15 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
 
     public ResponseEntity<?> registration (String username, String password) {
-        userCredentialsValidation(username,password);
         User user = User.builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))
                 .build();
-        System.out.println(user.getPassword());
         if (userRepository.findById(user.getUsername()).isPresent()) {
             throw new UsernameExistException("Данное имя пользователя занято!");
         }
         userRepository.save(user);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Вы молодец",HttpStatus.OK);
     }
 
     public ResponseEntity<?> authorization (String username, String password) {
