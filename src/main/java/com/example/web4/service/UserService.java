@@ -1,6 +1,8 @@
 package com.example.web4.service;
 
+import com.example.web4.exceptions.IncorrectUserCredentialsException;
 import com.example.web4.jwt.JwtTokenProvider;
+import com.example.web4.exceptions.UsernameExistException;
 import com.example.web4.model.User;
 import com.example.web4.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,30 +19,39 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
 
     public ResponseEntity<?> registration (String username, String password) {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            user = User.builder()
+        userCredentialsValidation(username,password);
+        User user = User.builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))
                 .build();
-            userRepository.save(user);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        System.out.println(user.getPassword());
+        if (userRepository.findById(user.getUsername()).isPresent()) {
+            throw new UsernameExistException("Данное имя пользователя занято!");
         }
+        userRepository.save(user);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     public ResponseEntity<?> authorization (String username, String password) {
         User user = userRepository.findByUsername(username);
-        String accessToken = jwtTokenProvider.createToken(username, 600000);
-       // String refreshToken = jwtTokenProvider.createToken(username, 1200000);
+        String token = jwtTokenProvider.createToken(username);
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
+            throw new IncorrectUserCredentialsException("Неправильный логин или пароль!");
         }
         if (passwordEncoder.matches(password,user.getPassword())) {
-            return new ResponseEntity<>(accessToken, HttpStatus.OK);
+            return new ResponseEntity<>(token, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new IncorrectUserCredentialsException("Неправильный логин или пароль!");
+
+        }
+    }
+    private void userCredentialsValidation(String username, String password) {
+        if (!(password.length() < 60 && 6 < password.length())) {
+            throw new IncorrectUserCredentialsException("Длина пароля минимум 6 и максимум 60!");
+        }
+
+        if (!(username.length() < 20 && 2 < username.length())) {
+            throw new IncorrectUserCredentialsException("Длина логина минимум 2 и максимум 20!");
         }
     }
 }

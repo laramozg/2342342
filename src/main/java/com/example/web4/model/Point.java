@@ -16,28 +16,21 @@ import java.time.LocalDateTime;
 @Table(name = "points")
 public class Point {
     @Id
-    @Column(nullable = false, unique = true)
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Integer id;
-    @Max(5)
-    @Min(-5)
-    @Column(nullable = false)
+    @Max(4)
+    @Min(-4)
     private double x;
-    @Max(5)
+    @Max(3)
     @Min(-3)
-    @Column(nullable = false)
     private double y;
-    @Max(5)
+    @Max(4)
     @Min(1)
-    @Column(nullable = false)
     private double r;
-    @Column(nullable = false)
     private boolean result;
-    @Column(nullable = false)
     private LocalDateTime time;
-    @Column(nullable = false)
-    private String user;
-    public boolean getResult() {
-        return result;
-    }
+
+    @JoinColumn
+    private String owner;
 }
+

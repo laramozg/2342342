@@ -1,21 +1,28 @@
 package com.example.web4.jwt;
 
 import io.jsonwebtoken.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
 import java.util.Date;
 
+@RequiredArgsConstructor
 @Component
 public class JwtTokenProvider {
-    private final String secret = "g4gu31341h4ev1b";
+    @Value("${jwt.token.secret}")
+    private String secret;
 
-    public String createToken(String username, long validityInMilSec) {
+    @Value("${jwt.token.expired}")
+    private long validityInMilSec;
+
+    private final JwtUserDetailsService userDetailsService;
+
+    public String createToken(String username) {
 
         Claims claims = Jwts.claims().setSubject(username);
         Date now = new Date();
@@ -28,8 +35,17 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS256,secret)
                 .compact();
     }
+
+    public Authentication getAuthentication(String token) {
+        UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
+        return new UsernamePasswordAuthenticationToken(getUsername(token), "", userDetails.getAuthorities());
+    }
+
     public String getUsername(String token) {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
+    }
+    public String resolveAccessToken(HttpServletRequest req) {
+        return req.getHeader("Authorization");
     }
 
     public boolean validateToken(String token) throws JwtAuthenticationException {
@@ -37,14 +53,8 @@ public class JwtTokenProvider {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException ex) {
-            System.out.println("Jwt token не верный");
-            return false;
+            throw new JwtException("Невалидный token");
         }
     }
-    public String resolveAccessToken(HttpServletRequest req) {
-        return req.getHeader("AccessToken");
-    }
-    public String resolveRefreshToken(HttpServletRequest req) {
-        return req.getHeader("RefreshToken");
-    }
+
 }

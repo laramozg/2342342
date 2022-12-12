@@ -13,17 +13,17 @@ public class CheckArea {
     }
 
     private boolean isRectangleHit(PointRequest point) {
-        return point.getX() >= 0 && point.getX() <= point.getR()
+        return point.getX() >= 0 && point.getX() <= point.getR() / 2
                 && point.getY() <= 0 && point.getY() >= -point.getR();
     }
 
     private boolean isCircleHit(PointRequest point) {
-        return point.getX() >= 0 && point.getY() >= 0
-                && (pow(point.getX() /2, 2) + pow(point.getY() /2 , 2)) <= pow(point.getR() / 4, 2);
+        return point.getX() <= 0 && point.getY() >= 0
+                && (pow(point.getX(), 2) + pow(point.getY(), 2)) <= pow(point.getR() / 2, 2);
     }
 
     private boolean isTriangleHit(PointRequest point) {
-        return point.getX() <= 0 && point.getY() <= 0
-                && point.getX() <= point.getR() && point.getY()>= -point.getR() /2 ;
+        return point.getX() >= 0 && point.getY() >= 0
+                && point.getX() <= point.getR() && point.getY()>= -point.getR();
     }
 }

@@ -18,27 +18,27 @@ import java.util.List;
 public class PointService {
     private final PointRepository pointRepository;
     private final CheckArea checkArea;
-
+    private final Validate validate;
     public ResponseEntity<?> getPoints(){
-        return new ResponseEntity<>(pointRepository.getPointByUser(SecurityContextHolder.getContext().getAuthentication().getName()),HttpStatus.OK);
+        return new ResponseEntity<>(pointRepository.getPointByOwner(SecurityContextHolder.getContext().getAuthentication().getName()),HttpStatus.OK);
     }
 
-    public ResponseEntity<?> addPoint(PointRequest pointDTO) {
+    public ResponseEntity<?> addPoint(PointRequest pointRequest) {
+        validate.validatePoint(pointRequest);
         Point point = Point.builder()
-                .x(pointDTO.getX())
-                .y(pointDTO.getY())
-                .r(pointDTO.getR())
-                .result(checkArea.isHit(pointDTO))
+                .x(pointRequest.getX())
+                .y(pointRequest.getY())
+                .r(pointRequest.getR())
+                .result(checkArea.isHit(pointRequest))
                 .time(LocalDateTime.now())
-                .user(SecurityContextHolder.getContext().getAuthentication().getName())
+                .owner(SecurityContextHolder.getContext().getAuthentication().getName())
                 .build();
-//        point.setUser(SecurityContextHolder.getContext().getAuthentication().getName());
-        System.out.println(point.getResult());
+
         pointRepository.save(point);
         return new ResponseEntity<>(point, HttpStatus.OK);
     }
     public ResponseEntity<?> deletePoints() {
-        pointRepository.deleteAllByUser(SecurityContextHolder.getContext().getAuthentication().getName());
+        pointRepository.deleteAllByOwner(SecurityContextHolder.getContext().getAuthentication().getName());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
