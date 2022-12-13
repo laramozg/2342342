@@ -11,13 +11,7 @@ import javax.validation.constraints.Min;
 @Setter
 @AllArgsConstructor
 public class PointRequest {
-    @Max(4)
-    @Min(-4)
     private double x;
-    @Max(3)
-    @Min(-3)
     private double y;
-    @Max(4)
-    @Min(1)
     private double r;
 }

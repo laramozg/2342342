@@ -9,8 +9,6 @@ import org.hibernate.validator.constraints.Length;
 @Setter
 @AllArgsConstructor
 public class UserRequest {
-    @Length(min = 6, max = 60)
     private String username;
-    @Length(min = 2, max = 60)
     private String password;
 }

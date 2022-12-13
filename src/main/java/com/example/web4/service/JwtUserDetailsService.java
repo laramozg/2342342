@@ -1,4 +1,4 @@
-package com.example.web4.jwt;
+package com.example.web4.service;
 
 import com.example.web4.exceptions.IncorrectUserCredentialsException;
 import com.example.web4.model.User;

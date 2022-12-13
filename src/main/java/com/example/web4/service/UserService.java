@@ -19,6 +19,7 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
 
     public ResponseEntity<?> registration (String username, String password) {
+        userCredentialsValidation(username,password);
         User user = User.builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))
@@ -27,7 +28,7 @@ public class UserService {
             throw new UsernameExistException("Данное имя пользователя занято!");
         }
         userRepository.save(user);
-        return new ResponseEntity<>("Вы молодец",HttpStatus.OK);
+        return new ResponseEntity<>("Вы успешно зарегистрировались",HttpStatus.OK);
     }
 
     public ResponseEntity<?> authorization (String username, String password) {
@@ -45,11 +46,11 @@ public class UserService {
     }
     private void userCredentialsValidation(String username, String password) {
         if (!(password.length() < 60 && 6 < password.length())) {
-            throw new IncorrectUserCredentialsException("Длина пароля минимум 6 и максимум 60!");
+            throw new IncorrectUserCredentialsException("Длина пароля минимум 6 и максимум 20!");
         }
 
         if (!(username.length() < 20 && 2 < username.length())) {
-            throw new IncorrectUserCredentialsException("Длина логина минимум 2 и максимум 20!");
+            throw new IncorrectUserCredentialsException("Длина логина минимум 6 и максимум 20!");
         }
     }
 }
