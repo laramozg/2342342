@@ -39,7 +39,7 @@ public class UserService {
             throw new IncorrectUserCredentialsException("Неправильный логин или пароль!");
         }
         if (passwordEncoder.matches(password,user.getPassword())) {
-            return new ResponseDTO(HttpStatus.OK.value(), token);
+            return new ResponseDTO(HttpStatus.OK.value(), token,"");
         } else {
             throw new IncorrectUserCredentialsException("Неправильный логин или пароль!");
 
