@@ -7,15 +7,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class Validate {
     public void validatePoint(PointRequest point) {
-        byte MAX_Y = 5;
-        byte MIN_Y = -5;
-
-        if (!(point.getY() > MIN_Y && point.getY() < MAX_Y)) {
+        if ((point.getY() > 3 || point.getY() < -3)) {
             throw new InvalidParameterException("Значение Y не попадает в нужный интервал!");
         }
-
-        if (point.getR() <= 0) {
-            throw new InvalidParameterException("Значение R не может быть неположительным!");
+        if ((point.getX() > 4 || point.getX() < -4)) {
+            throw new InvalidParameterException("Значение X не попадает в нужный интервал!");
+        }
+        if (point.getR() > 4 || point.getR() < 1) {
+            throw new InvalidParameterException("Значение R не попадает в нужный интервал!");
         }
     }
 }
