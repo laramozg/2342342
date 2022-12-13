@@ -6,22 +6,19 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-
 public class ResponseUser {
     public ResponseUser(int statusCode, String message) {
         this.statusCode = statusCode;
         this.message = message;
     }
 
-    public ResponseUser(int statusCode, String accessToken, String refreshToken) {
+    public ResponseUser(int statusCode, String message, String accessToken) {
         this.statusCode = statusCode;
+        this.message = message;
         this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
     }
 
     private int statusCode;
     private String message;
     private String accessToken;
-    private String refreshToken;
 }
