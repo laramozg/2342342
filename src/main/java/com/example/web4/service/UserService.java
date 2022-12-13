@@ -3,6 +3,7 @@ package com.example.web4.service;
 import com.example.web4.exceptions.IncorrectUserCredentialsException;
 import com.example.web4.jwt.JwtTokenProvider;
 import com.example.web4.exceptions.UsernameExistException;
+import com.example.web4.model.ResponseDTO;
 import com.example.web4.model.User;
 import com.example.web4.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public ResponseEntity<?> registration (String username, String password) {
+    public ResponseDTO registration (String username, String password) {
         userCredentialsValidation(username,password);
         User user = User.builder()
                 .username(username)
@@ -28,17 +29,17 @@ public class UserService {
             throw new UsernameExistException("Данное имя пользователя занято!");
         }
         userRepository.save(user);
-        return new ResponseEntity<>("Вы успешно зарегистрировались",HttpStatus.OK);
+        return new ResponseDTO(HttpStatus.CREATED.value(),"Регистрация прошла успешно" );
     }
 
-    public ResponseEntity<?> authorization (String username, String password) {
+    public ResponseDTO authorization (String username, String password) {
         User user = userRepository.findByUsername(username);
         String token = jwtTokenProvider.createToken(username);
         if (user == null) {
             throw new IncorrectUserCredentialsException("Неправильный логин или пароль!");
         }
         if (passwordEncoder.matches(password,user.getPassword())) {
-            return new ResponseEntity<>(token, HttpStatus.OK);
+            return new ResponseDTO(HttpStatus.OK.value(), token);
         } else {
             throw new IncorrectUserCredentialsException("Неправильный логин или пароль!");
 
