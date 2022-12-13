@@ -46,11 +46,11 @@ public class UserService {
         }
     }
     private void userCredentialsValidation(String username, String password) {
-        if (!(password.length() < 20 && 6 < password.length())) {
+        if (!(password.length() <= 20 && 6 <= password.length())) {
             throw new IncorrectUserCredentialsException("Длина логина минимум 6 и максимум 20!");
         }
 
-        if (!(username.length() < 20 && 6 < username.length())) {
+        if (!(username.length() <= 20 && 6 <= username.length())) {
             throw new IncorrectUserCredentialsException("Длина пароля минимум 6 и максимум 20!");
         }
     }
