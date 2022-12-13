@@ -2,12 +2,13 @@ package com.example.web4.service;
 
 import com.example.web4.exceptions.IncorrectUserCredentialsException;
 import com.example.web4.jwt.JwtTokenProvider;
-import com.example.web4.exceptions.UsernameExistException;
-import com.example.web4.model.ResponseUser;
+
+import com.example.web4.interaction.ResponseUser;
 import com.example.web4.model.User;
 import com.example.web4.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,27 +19,27 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public ResponseUser registration (String username, String password) {
+    public ResponseEntity<?> registration (String username, String password) {
         userCredentialsValidation(username,password);
         User user = User.builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))
                 .build();
         if (userRepository.findById(user.getUsername()).isPresent()) {
-            throw new UsernameExistException("Данное имя пользователя занято!");
+            throw new IllegalArgumentException("Данное имя пользователя занято!");
         }
         userRepository.save(user);
-        return new ResponseUser(HttpStatus.CREATED.value(),"Регистрация прошла успешно" );
+        return new ResponseEntity<>(new ResponseUser(HttpStatus.CREATED.value(),"Регистрация прошла успешно" ),HttpStatus.OK);
     }
 
-    public ResponseUser authorization (String username, String password) {
+    public ResponseEntity<?> authorization (String username, String password) {
         User user = userRepository.findByUsername(username);
         String token = jwtTokenProvider.createToken(username);
         if (user == null) {
             throw new IncorrectUserCredentialsException("Неправильный логин или пароль!");
         }
         if (passwordEncoder.matches(password,user.getPassword())) {
-            return new ResponseUser(HttpStatus.OK.value(), "Вы успешно авторизовались!",token);
+            return new ResponseEntity<>(new ResponseUser(HttpStatus.OK.value(), "Вы успешно авторизовались!",token),HttpStatus.OK);
         } else {
             throw new IncorrectUserCredentialsException("Неправильный логин или пароль!");
 

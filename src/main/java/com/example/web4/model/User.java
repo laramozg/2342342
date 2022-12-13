@@ -1,5 +1,6 @@
 package com.example.web4.model;
 
+import com.example.web4.model.Point;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

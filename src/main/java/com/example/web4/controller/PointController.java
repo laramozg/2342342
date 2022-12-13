@@ -8,8 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -23,7 +21,7 @@ public class PointController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addPoint(@RequestBody @Valid PointRequest pointDTO) {
+    public ResponseEntity<?> addPoint(@RequestBody PointRequest pointDTO) {
         return pointService.addPoint(pointDTO);
     }
 

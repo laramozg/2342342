@@ -19,7 +19,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         Optional<User> userOptional = usersRepository.findById(username);
 
         if (!userOptional.isPresent()) {
-            throw new IncorrectUserCredentialsException("Данный пользователь не найден!");
+            throw new IncorrectUserCredentialsException("Данный пользователь не найден! (не передавай елки-палки токен)");
         }
         return usersRepository.findById(username).get();
     }
