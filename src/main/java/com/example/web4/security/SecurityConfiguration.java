@@ -36,7 +36,6 @@ public class SecurityConfiguration {
                 .disable()
                 .formLogin().disable()
                 .logout().disable()
-
                 .authorizeRequests(auth -> auth.antMatchers("/user/auth", "/user/reg").permitAll()
                 .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
