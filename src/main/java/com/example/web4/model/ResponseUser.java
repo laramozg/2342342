@@ -1,4 +1,4 @@
-package com.example.web4.interaction;
+package com.example.web4.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

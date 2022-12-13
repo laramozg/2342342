@@ -3,7 +3,7 @@ package com.example.web4.service;
 import com.example.web4.exceptions.IncorrectUserCredentialsException;
 import com.example.web4.jwt.JwtTokenProvider;
 import com.example.web4.exceptions.UsernameExistException;
-import com.example.web4.interaction.ResponseUser;
+import com.example.web4.model.ResponseUser;
 import com.example.web4.model.User;
 import com.example.web4.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,7 @@
 package com.example.web4.controller;
 
-import com.example.web4.interaction.ResponseUser;
+import com.example.web4.interaction.ApiError;
+import com.example.web4.model.ResponseUser;
 import com.example.web4.model.UserRequest;
 import com.example.web4.service.UserService;
 import lombok.RequiredArgsConstructor;
