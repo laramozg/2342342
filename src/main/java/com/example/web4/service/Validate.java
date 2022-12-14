@@ -13,7 +13,7 @@ public class Validate {
         if ((point.getX() > 4 || point.getX() < -4)) {
             throw new InvalidParameterException("Значение X не попадает в нужный интервал!");
         }
-        if (point.getR() > 4 || point.getR() < 1) {
+        if (point.getR() > 5 || point.getR() < 1) {
             throw new InvalidParameterException("Значение R не попадает в нужный интервал!");
         }
     }

@@ -24,7 +24,7 @@ public class Point {
     @Max(3)
     @Min(-3)
     private double y;
-    @Max(4)
+    @Max(5)
     @Min(1)
     private double r;
     private boolean result;
