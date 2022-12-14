@@ -1,6 +1,7 @@
 package com.example.web4.service;
 
 
+import com.example.web4.interaction.ResponseUser;
 import com.example.web4.model.Point;
 import com.example.web4.model.PointRequest;
 import com.example.web4.repositories.PointRepository;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -36,9 +38,10 @@ public class PointService {
         pointRepository.save(point);
         return new ResponseEntity<>(point, HttpStatus.OK);
     }
+    @Transactional
     public ResponseEntity<?> deletePoints() {
         pointRepository.deleteAllByOwner(SecurityContextHolder.getContext().getAuthentication().getName());
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseUser(HttpStatus.OK.value(),"Удалено" ),HttpStatus.OK);
     }
 
 
